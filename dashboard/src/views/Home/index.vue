@@ -1,5 +1,5 @@
 <template>
-    <h1 className="text-3xl font-bold underline text-brand-main">Hello world!</h1>
+    <h1 className="text-3xl font-bold underline text-brand-main">Home</h1>
 </template>
 
 <script></script>
