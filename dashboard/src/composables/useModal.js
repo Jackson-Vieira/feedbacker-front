@@ -20,5 +20,5 @@ export default function useModal() {
     bus.off(EVENT_NAME, callback);
   };
 
-  { open, close, listen, off }
+  return { open, close, listen, off }
 }
