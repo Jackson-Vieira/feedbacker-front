@@ -12,7 +12,7 @@
           v-model="state.name.value"
           type="email"
           class="block w-full px-4 py-3 mt-1 text-lg bg-gray-100 border-2  rounded"
-          placeholder="Jhon doe"
+          placeholder="Jhon"
           :class="{ 'border-brand-danger': !!state.name.errorMessage }"
           required
         />
@@ -40,7 +40,6 @@
           v-model="state.password.value"
           type="password"
           class="block w-full px-4 py-3 mt-1 text-lg bg-gray-100 border-2 rounded"
-          placeholder="password"
           :class="{ 'border-brand-danger': !!state.password.errorMessage }"
           required
         />

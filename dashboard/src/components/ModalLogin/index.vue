@@ -27,7 +27,7 @@
           type="password"
           class="block w-full px-4 py-3 mt-1 text-lg bg-gray-100 border-2 rounded"
           :class="{ 'border-brand-danger': !!state.password.errorMessage }"
-          placeholder="password"
+
           required
         />
         <span class="block font-medium text-brand-danger">
