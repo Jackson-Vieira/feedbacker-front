@@ -64,6 +64,8 @@
 <script>
 import { reactive } from 'vue'
 import { useField } from 'vee-validate'
+
+import { useToast } from 'vue-toastification'
 import useModal from '../../composables/useModal'
 
 import { validateEmptyAndLength3, validateEmail } from '../../utils/validators'
@@ -108,7 +110,8 @@ export default {
         errorMessage: nameErrorMessage
       }
     })
-
+    
+    const toast = useToast()
     const router = useRouter()
     const modal = useModal()
 
@@ -130,21 +133,28 @@ export default {
 
     async function handleSubmit() {
       try {
+        toast.clear()
         state.isLoading = true
-        const response = await services.auth.register({
+        const {data, errors} = await services.auth.register({
           name: state.name.value,
           email: state.email.value,
           password: state.password.value
         })
-        if (!response.errors) {
+        if (!errors) {
           await login({
             email: state.email.value,
             password: state.password.value
           })
+          return
         }
-        // Errors tratament
+
+        if(errors.status === 400){
+          toast.error('Email já cadastrado')
+        }
+        
       } catch (errors) {
         state.hasErrors = true
+        toast.error('Erro ao criar conta')
       } finally {
         state.isLoading = false
       }

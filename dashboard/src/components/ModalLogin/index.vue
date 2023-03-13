@@ -27,7 +27,6 @@
           type="password"
           class="block w-full px-4 py-3 mt-1 text-lg bg-gray-100 border-2 rounded"
           :class="{ 'border-brand-danger': !!state.password.errorMessage }"
-
           required
         />
         <span class="block font-medium text-brand-danger">
@@ -51,6 +50,7 @@
 <script>
 import { reactive } from 'vue'
 import { useField } from 'vee-validate'
+import { useToast } from 'vue-toastification'
 import useModal from '../../composables/useModal'
 
 import { validateEmptyAndLength3, validateEmail } from '../../utils/validators'
@@ -89,10 +89,12 @@ export default {
     })
 
     const router = useRouter()
+    const toast = useToast()
     const modal = useModal()
 
     async function handleSubmit() {
       try {
+        toast.clear()
         state.isLoading = true
         const { data, errors } = await services.auth.login({
           email: state.email.value,
@@ -105,11 +107,24 @@ export default {
             name: 'Feedbacks'
           })
           modal.close()
+          return
+        }
+
+        if (errors.status == 404) {
+          toast.error('Usuário não encontrado')
+        }
+        if (errors.status == 401) {
+          toast.error('E-mail/Senha inválidos')
+        }
+        if (errors.status == 400) {
+          toast.error('Ocorreu um erro ao fazer o login')
         }
       } catch (error) {
         state.hasErrors = !!error
+        toast.error('Erro ao fazer login')
       } finally {
-        state.isLoading = false 
+        state.isLoading = false
+
       }
     }
 

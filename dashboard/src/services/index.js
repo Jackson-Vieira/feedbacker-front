@@ -12,6 +12,14 @@ const httpClient = axios.create({
   }
 })
 
+httpClient.interceptors.response.use((response) => response, (error) => {
+  let canThrow = error.status === 0 || error.status === 500;
+  if (canThrow) {
+    throw new Error(error);
+  }
+  return error;
+})
+
 export default {
   auth: AuthService(httpClient)
 }
