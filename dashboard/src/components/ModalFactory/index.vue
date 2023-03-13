@@ -21,13 +21,15 @@
 </template>
 
 <script>
-import { onBeforeUnmount, onMounted, reactive } from 'vue'
-import useModal from '../../composables/useModal'
+import { defineAsyncComponent, onBeforeUnmount, onMounted, reactive } from 'vue'
+import useModal from '@/composables/useModal'
 
 const DEFAULT_WIDTH = 'w-3/4 lg:w-1/3'
 
 export default {
-  components: {},
+  components: {
+    ModalLogin: defineAsyncComponent(() => import('../ModalLogin'))
+  },
 
   setup() {
     const state = reactive({
