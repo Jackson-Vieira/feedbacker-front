@@ -41,7 +41,7 @@
         :class="{ 'opacity-50': state.isLoading }"
         class="px-8 py-3 mt-10 text-2xl font-bold text-center text-white rounded-full bg-brand-main transition-all duration-150"
       >
-        <Icon v-if="state.isLoading" class="animate-spin" name="Loading"/>
+        <Icon v-if="state.isLoading" class="animate-spin" name="Loading" />
         <span v-else>Entrar</span>
       </button>
     </form>
@@ -50,31 +50,40 @@
 
 <script>
 import { reactive } from 'vue'
+import { useField } from 'vee-validate'
 import useModal from '../../composables/useModal'
+
+import { validateEmptyAndLength3, validateEmail } from '../../utils/validators'
 
 export default {
   setup() {
+    const { value: emailValue, errorMessage: emailErrorMessage } = useField('email', [
+      validateEmptyAndLength3,
+      validateEmail
+    ])
+    const { value: passwordValue, errorMessage: passwordErrorMessage } = useField('password', validateEmptyAndLength3)
+
     const state = reactive({
       isLoading: false,
       hasErrors: false,
       email: {
-        value: '',
-        errorMessage: ''
+        value: emailValue,
+        errorMessage: emailErrorMessage
       },
       password: {
-        value: '',
-        errorMessage: ''
+        value: passwordValue,
+        errorMessage: passwordErrorMessage
       }
     })
 
-    const modal = useModal();
+    const modal = useModal()
 
-    function handleSubmit(){
-      state.isLoading = true;
+    function handleSubmit() {
+      state.isLoading = true
       setTimeout(() => {
-        state.isLoading = false;
-        modal.close();
-      }, 2000);
+        state.isLoading = false
+        modal.close()
+      }, 2000)
     }
 
     return {
@@ -83,8 +92,6 @@ export default {
       handleSubmit
     }
   }
-
-
 }
 </script>
 
