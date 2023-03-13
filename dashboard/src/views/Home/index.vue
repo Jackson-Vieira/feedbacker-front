@@ -19,7 +19,11 @@ export default {
   setup() {
     const modal = useModal()
 
-    const handleAccountCreate = () => {}
+    const handleAccountCreate = () => {
+      modal.open({
+        component: 'ModalCreateAccount'
+      })
+    }
 
     const handleLogin = () => {
       modal.open({

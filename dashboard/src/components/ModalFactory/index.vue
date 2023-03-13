@@ -28,7 +28,8 @@ const DEFAULT_WIDTH = 'w-3/4 lg:w-1/3'
 
 export default {
   components: {
-    ModalLogin: defineAsyncComponent(() => import('../ModalLogin'))
+    ModalLogin: defineAsyncComponent(() => import('../ModalLogin')),
+    ModalCreateAccount: defineAsyncComponent(() => import('../ModalCreateAccount'))
   },
 
   setup() {
