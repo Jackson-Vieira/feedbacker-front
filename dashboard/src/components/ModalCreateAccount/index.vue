@@ -135,6 +135,7 @@ export default {
       try {
         toast.clear()
         state.isLoading = true
+        // eslint-disable-next-line no-unused-vars
         const {data, errors} = await services.auth.register({
           name: state.name.value,
           email: state.email.value,
