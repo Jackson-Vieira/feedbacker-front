@@ -64,7 +64,7 @@ export default {
 
 @media (min-width: 640px) {
   .header-group {
-    background-image: url("../../assets/images/blue_ballons.png");
+    background-image: url("../../assets/images/home_ballons.png");
     background-size: 628px;
     background-position: 90% 100%;
     background-repeat: no-repeat;
