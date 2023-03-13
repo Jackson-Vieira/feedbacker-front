@@ -9,18 +9,24 @@
 import Contact from './Contact.vue'
 import CustomHeader from './CustomHeader.vue'
 
+import useModal from '@/composables/useModal'
+
 export default {
   components: {
     Contact,
     CustomHeader
   },
   setup() {
+    const modal = useModal()
+
     const handleAccountCreate = () => {
       console.log('create account')
     }
 
     const handleLogin = () => {
-      console.log('login')
+      modal.open({
+        component: 'ModalLogin'
+      })
     }
 
     return {
@@ -31,5 +37,4 @@ export default {
 }
 </script>
 
-<style lang="postcss" scoped>
-</style>
+<style lang="postcss" scoped></style>
