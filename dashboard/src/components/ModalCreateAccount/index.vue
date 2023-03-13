@@ -10,8 +10,8 @@
         <span class="text-lg font-medium text-gray-800">Nome</span>
         <input
           v-model="state.name.value"
-          type="email"
-          class="block w-full px-4 py-3 mt-1 text-lg bg-gray-100 border-2  rounded"
+          type="text"
+          class="block w-full px-4 py-3 mt-1 text-lg bg-gray-100 border-2 rounded"
           placeholder="Jhon"
           :class="{ 'border-brand-danger': !!state.name.errorMessage }"
           required
@@ -48,15 +48,15 @@
         </span>
       </label>
 
-        <button
-          :disabled="state.isLoading"
-          type="submit"
-          :class="{ 'opacity-50': state.isLoading }"
-          class="w-full px-8 py-3 mt-1 text-2xl font-bold text-center text-white rounded bg-brand-main transition-all duration-150 "
-        >
-          <Icon v-if="state.isLoading" class="inline-block animate-spin" name="Loading" />
-          <span v-else>Entrar</span>
-        </button>
+      <button
+        :disabled="state.isLoading"
+        type="submit"
+        :class="{ 'opacity-50': state.isLoading }"
+        class="w-full px-8 py-3 mt-1 text-2xl font-bold text-center text-white rounded bg-brand-main transition-all duration-150"
+      >
+        <Icon v-if="state.isLoading" class="inline-block animate-spin" name="Loading" />
+        <span v-else>Entrar</span>
+      </button>
     </form>
   </div>
 </template>
@@ -68,9 +68,9 @@ import useModal from '../../composables/useModal'
 
 import { validateEmptyAndLength3, validateEmail } from '../../utils/validators'
 
-import Icon from '../Icon';
-
-
+import Icon from '../Icon'
+import services from '@/services'
+import { useRouter } from 'vue-router'
 
 export default {
   components: {
@@ -82,9 +82,15 @@ export default {
       validateEmptyAndLength3,
       validateEmail
     ])
-    const { value: passwordValue, errorMessage: passwordErrorMessage } = useField('password', validateEmptyAndLength3)
+    const { value: passwordValue, errorMessage: passwordErrorMessage } = useField(
+      'password',
+      validateEmptyAndLength3
+    )
 
-    const { value: nameValue, errorMessage: nameErrorMessage } = useField('name', validateEmptyAndLength3)
+    const { value: nameValue, errorMessage: nameErrorMessage } = useField(
+      'name',
+      validateEmptyAndLength3
+    )
 
     const state = reactive({
       isLoading: false,
@@ -99,18 +105,49 @@ export default {
       },
       name: {
         value: nameValue,
-        errorMessage: nameErrorMessage,
+        errorMessage: nameErrorMessage
       }
     })
 
+    const router = useRouter()
     const modal = useModal()
 
-    function handleSubmit() {
-      state.isLoading = true
-      setTimeout(() => {
-        state.isLoading = false
+    async function login({ email, password }) {
+      const { data, errors } = await services.auth.login({
+        email,
+        password
+      })
+
+      if (!errors) {
+        window.localStorage.setItem('token', data.access)
+        router.push({
+          name: 'Feedbacks'
+        })
         modal.close()
-      }, 2000)
+        return
+      }
+    }
+
+    async function handleSubmit() {
+      try {
+        state.isLoading = true
+        const response = await services.auth.register({
+          name: state.name.value,
+          email: state.email.value,
+          password: state.password.value
+        })
+        if (!response.errors) {
+          await login({
+            email: state.email.value,
+            password: state.password.value
+          })
+        }
+        // Errors tratament
+      } catch (errors) {
+        state.hasErrors = true
+      } finally {
+        state.isLoading = false
+      }
     }
 
     return {
