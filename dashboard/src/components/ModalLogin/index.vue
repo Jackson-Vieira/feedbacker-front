@@ -20,7 +20,7 @@
           {{ state.email.errorMessage }}
         </span>
       </label>
-      <label class="block pt-5">
+      <label class="block my-3">
         <span class="text-lg font-medium text-gray-800">Senha</span>
         <input
           v-model="state.password.value"
@@ -35,15 +35,15 @@
         </span>
       </label>
 
-      <button
-        :disabled="state.isLoading"
-        type="submit"
-        :class="{ 'opacity-50': state.isLoading }"
-        class="px-8 py-3 mt-10 text-2xl font-bold text-center text-white rounded-full bg-brand-main transition-all duration-150"
-      >
-        <Icon v-if="state.isLoading" class="animate-spin" name="Loading" />
-        <span v-else>Entrar</span>
-      </button>
+        <button
+          :disabled="state.isLoading"
+          type="submit"
+          :class="{ 'opacity-50': state.isLoading }"
+          class="w-full px-8 py-3 mt-1 text-2xl font-bold text-center text-white rounded bg-brand-main transition-all duration-150 "
+        >
+          <Icon v-if="state.isLoading" class="inline-block animate-spin" name="Loading" />
+          <span v-else>Entrar</span>
+        </button>
     </form>
   </div>
 </template>
@@ -55,7 +55,15 @@ import useModal from '../../composables/useModal'
 
 import { validateEmptyAndLength3, validateEmail } from '../../utils/validators'
 
+import Icon from '../Icon';
+
+
+
 export default {
+  components: {
+    Icon
+  },
+
   setup() {
     const { value: emailValue, errorMessage: emailErrorMessage } = useField('email', [
       validateEmptyAndLength3,
