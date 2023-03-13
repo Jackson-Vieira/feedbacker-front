@@ -69,13 +69,18 @@ export default {
 
     const modal = useModal();
 
-    function close(){
-      modal.close()
+    function handleSubmit(){
+      state.isLoading = true;
+      setTimeout(() => {
+        state.isLoading = false;
+        modal.close();
+      }, 2000);
     }
 
     return {
       state,
-      close
+      close: modal.close,
+      handleSubmit
     }
   }
 
