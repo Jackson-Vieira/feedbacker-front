@@ -11,8 +11,8 @@
         <input
           v-model="state.email.value"
           type="email"
-          class="block w-full px-4 py-3 mt-1 text-lg bg-gray-100 border-2 rounded"
           placeholder="jhondoe@gmail.com"
+          class="block w-full px-4 py-3 mt-1 text-lg bg-gray-100 border-2 rounded outline-none"
           :class="{ 'border-brand-danger': !!state.email.errorMessage }"
           required
         />
@@ -25,7 +25,7 @@
         <input
           v-model="state.password.value"
           type="password"
-          class="block w-full px-4 py-3 mt-1 text-lg bg-gray-100 border-2 rounded"
+          class="block w-full px-4 py-3 mt-1 text-lg bg-gray-100 border-2 rounded outline-none"
           :class="{ 'border-brand-danger': !!state.password.errorMessage }"
           required
         />
@@ -124,7 +124,6 @@ export default {
         toast.error('Erro ao fazer login')
       } finally {
         state.isLoading = false
-
       }
     }
 
